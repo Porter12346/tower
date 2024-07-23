@@ -3,13 +3,27 @@
 </script>
 
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid bg-img">
+    <div class="row">
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center hero-section">
+        <h2>Event management for People, by people</h2>
+        <p>Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Tower. Events are happening every day—log in to join the fun.</p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="m-3">How Tower works</h3>
+        <div class="col-md-6">
+          <div>
+            discover events
+          </div>
+        </div>
+        <div class="col-md-6">
+          
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -33,5 +47,16 @@
       object-position: center;
     }
   }
+}
+
+.bg-img {
+  background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  height: 45vh;
+  background-position: center;
+  background-size: cover;
+}
+.hero-section{
+  height: 45vh;
+  text-shadow: 2px 2px 2px black;
 }
 </style>
