@@ -9,7 +9,7 @@ export const TowerEventSchema = new Schema({
     capacity: { type: Number, min: 1, max: 5000, required: true },
     startDate: { type: Date, required: true, },
     isCanceled: { type: Boolean, required: true, default: false },
-    type: { type: String, enum: ['concert', 'concention', 'sport', 'digital'] }
+    type: { type: String, enum: ['concert', 'convention', 'sport', 'digital'] }
 }, { timestamps: true, toJSON: { virtuals: true } })
 
 TowerEventSchema.virtual('creator', {

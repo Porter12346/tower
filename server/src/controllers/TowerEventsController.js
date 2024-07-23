@@ -11,12 +11,27 @@ export class TowerEventsController extends BaseController {
             .use(Auth0Provider.getAuthorizedUserInfo)
             .post('', this.createTowerEvent)
             .put('/:eventId', this.editTowerEvent)
+            .delete('/:eventId', this.cancelTowerEvent)
 
     }
-
-    editTowerEvent(request, response, next) {
+    async cancelTowerEvent(request, response, next) {
         try {
-            
+            const userId = request.userInfo.id
+            const eventId = request.params.eventId
+            const result =  await towerEventService.cancelEvent(userId, eventId)
+            response.send(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async editTowerEvent(request, response, next) {
+        try {
+            const eventId = request.params.eventId
+            const eventData = request.body
+            const userInfo= request.userInfo
+            const result = await towerEventService.editTowerEvent(eventData, userInfo, eventId)
+            response.send(result)
         } catch (error) {
             next(error)
         }
