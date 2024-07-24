@@ -8,12 +8,13 @@ import { TowerEvent } from '../models/TowerEvent.js';
 
 
 <template>
-    <div class="card" style="width: 18rem;">
+    <div class="card">
         <img :src="TowerEventProp.coverImg" class="card-img-top" :alt="TowerEventProp.name">
         <div class="card-body">
             <h5 class="card-title">{{ TowerEventProp.name }}</h5>
             <p class="card-text">Hosted by {{ TowerEventProp.creator.name }}</p>
             <p class="card-text">{{ TowerEventProp.startDate.toLocaleDateString() }} - {{ TowerEventProp.location }}</p>
+            <p>10 attending (FIX ME)</p>
         </div>
     </div>
 </template>

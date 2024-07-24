@@ -1,15 +1,27 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import { towerEventsService } from '../services/TowerEventsService.js';
+import { all } from 'axios';
+import { logger } from '../utils/Logger.js';
 
-  const towerEvents = computed(()=>AppState.towerEvents)
-
-  onMounted(getTowerEvents)
-
-  async function getTowerEvents(){
-    await towerEventsService.getEvents()
+const filter = ref('all')
+const account = computed(() => AppState.account)
+const towerEvents = computed(() => {
+  if (filter.value == 'all') {
+    return AppState.towerEvents
   }
+  return AppState.towerEvents.filter(towerEvent => towerEvent.type == filter.value)
+})
+
+onMounted(getTowerEvents)
+
+const catagories = ['all', 'concert', 'convention', 'sport', 'digital']
+const catagorieIcons = ['mdi mdi-all-inclusive', 'mdi mdi-music', 'mdi mdi-account-group', 'mdi mdi-soccer', 'mdi mdi-monitor']
+
+async function getTowerEvents() {
+  await towerEventsService.getEvents()
+}
 </script>
 
 <template>
@@ -49,7 +61,7 @@ import { towerEventsService } from '../services/TowerEventsService.js';
             <div class="col-10">
               <h5>Start an event to invite your friends</h5>
               <p>Create your own Tower event, and draw from a community of millions</p>
-              <a href="">Create an event</a>
+              <p v-if="account" data-bs-toggle="modal" data-bs-target="#EventFormModal" @click="logger.log('click')" type="button" class="mb-0 text-primary">Create an event</p>
             </div>
           </div>
         </div>
@@ -62,26 +74,11 @@ import { towerEventsService } from '../services/TowerEventsService.js';
       </div>
       <div class="col-md-12">
         <div class="d-flex justify-content-between">
-          <div class="bg-body p-md-3 p-1 text-center">
-            <i class="mdi mdi-all-inclusive"></i>
-            <h6>All</h6>
-          </div>
-          <div class="bg-body p-md-3 text-center">
-            <i class="mdi mdi-music"></i>
-            <h6>Concerts</h6>
-          </div>
-          <div class="bg-body p-md-3 text-center">
-            <i class="mdi mdi-account-group"></i>
-            <h6>Conventions</h6>
-          </div>
-          <div class="bg-body p-md-3 text-center">
-            <i class="mdi mdi-soccer"></i>
-            <h6>Sports</h6>
-          </div>
-          <div class="bg-body p-md-3 text-center">
-            <i class="mdi mdi-monitor"></i>
-            <h6>Digital</h6>
-          </div>
+          <button @click="filter = catagory" v-for="(catagory, index) in catagories" :key="catagory"
+            class="bg-body w-100 p-md-3 p-1 text-center">
+            <i :class=catagorieIcons[index]></i>
+            <h6>{{ catagory }}</h6>
+          </button>
         </div>
       </div>
     </div>
@@ -92,13 +89,14 @@ import { towerEventsService } from '../services/TowerEventsService.js';
         <h3>Upcoming events</h3>
       </div>
       <div class="row">
-              <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2 d-flex justify-content-center">
-          <EventCard :TowerEventProp="event"/>
+        <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2 d-flex justify-content-center">
+          <EventCard :TowerEventProp="event" />
         </div>
       </div>
 
     </div>
   </div>
+  <EventForm />
 </template>
 
 <style scoped lang="scss">

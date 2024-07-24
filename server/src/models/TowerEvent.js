@@ -19,3 +19,7 @@ TowerEventSchema.virtual('creator', {
     justOne: true
 })
 
+// TowerEventSchema.virtual('ticketCount', {
+
+// })
+
