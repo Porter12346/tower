@@ -41,7 +41,7 @@ class TowerEventService {
     }
 
     async getAllTowerEvents() {
-        const events = await dbContext.TowerEvents.find()
+        const events = await dbContext.TowerEvents.find().populate('creator')
         return (events)
     }
 

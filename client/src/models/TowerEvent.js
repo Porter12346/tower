@@ -1,3 +1,5 @@
+import { Account } from "./Account.js"
+
 export class TowerEvent{
     constructor(data){
         this.id = data._id
@@ -7,10 +9,11 @@ export class TowerEvent{
         this.coverImg = data.coverImg
         this.location = data.location
         this.capacity = data.capacity
-        this.startDate = data.startDate
+        this.startDate = new Date(data.startDate)
         this.isCanceled = data.isCanceled
         this.type = data.type
         this.createdAt = new Date(data.createdAt)
         this.updatedAt = new Date(data.updatedAt)
+        this.creator = new Account(data.creator)
     }
 }

@@ -92,7 +92,7 @@ import { towerEventsService } from '../services/TowerEventsService.js';
         <h3>Upcoming events</h3>
       </div>
       <div class="row">
-              <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2">
+              <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2 d-flex justify-content-center">
           <EventCard :TowerEventProp="event"/>
         </div>
       </div>

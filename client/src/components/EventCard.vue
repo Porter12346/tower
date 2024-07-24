@@ -12,7 +12,8 @@ import { TowerEvent } from '../models/TowerEvent.js';
         <img :src="TowerEventProp.coverImg" class="card-img-top" :alt="TowerEventProp.name">
         <div class="card-body">
             <h5 class="card-title">{{ TowerEventProp.name }}</h5>
-            <p class="card-text">{{ TowerEventProp.description }}</p>
+            <p class="card-text">Hosted by {{ TowerEventProp.creator.name }}</p>
+            <p class="card-text">{{ TowerEventProp.startDate.toLocaleDateString() }} - {{ TowerEventProp.location }}</p>
         </div>
     </div>
 </template>
