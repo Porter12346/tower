@@ -2,6 +2,11 @@ import { dbContext } from "../db/DbContext.js"
 
 class TicketsService {
 
+    async getTicketsByEventId(eventId) {
+        const tickets = await dbContext.Tickets.find({eventId: eventId}).populate('profile event')
+        return(tickets)
+    }
+
     async getTicketsByUserId(id) {
         const tickets = await dbContext.Tickets.find({accountId: id}).populate('profile event')
         return(tickets)

@@ -20,7 +20,8 @@ export class TowerEventsController extends BaseController {
     async getTicketsByEventId(request, response, next) {
         try {
             const eventId = request.params.eventId
-            const tickets = await ticketsService.getTicketsByEventId()
+            const tickets = await ticketsService.getTicketsByEventId(eventId)
+            response.send(tickets)
         } catch (error) {
             next(error)
         }
@@ -30,7 +31,7 @@ export class TowerEventsController extends BaseController {
         try {
             const userId = request.userInfo.id
             const eventId = request.params.eventId
-            const result =  await towerEventService.cancelEvent(userId, eventId)
+            const result = await towerEventService.cancelEvent(userId, eventId)
             response.send(result)
         } catch (error) {
             next(error)
@@ -41,7 +42,7 @@ export class TowerEventsController extends BaseController {
         try {
             const eventId = request.params.eventId
             const eventData = request.body
-            const userInfo= request.userInfo
+            const userInfo = request.userInfo
             const result = await towerEventService.editTowerEvent(eventData, userInfo, eventId)
             response.send(result)
         } catch (error) {
