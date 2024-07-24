@@ -6,47 +6,32 @@ import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
 import { TowerEvent } from '../models/TowerEvent.js';
 
-defineProps({
-    editing: { type: Boolean, default: false },
-    eventProp: { type: TowerEvent }
+const props = defineProps({
+    eventProp: { type: TowerEvent, required: true }
 })
 
 const editableEventData = ref({
-    name: '',
-    coverImg: '',
-    description: '',
-    startDate: null,
-    capacity: 0,
-    location: '',
-    type: ''
+    name: props.eventProp.name,
+    coverImg: props.eventProp.coverImg,
+    description: props.eventProp.description,
+    startDate: props.eventProp.startDate,
+    capacity: props.eventProp.capacity,
+    location: props.eventProp.location,
+    type: props.eventProp.type
 })
 
-async function createEvent() {
+async function editEvent() {
     try {
-        await towerEventsService.createEvent(editableEventData.value)
+        await towerEventsService.editEvent(editableEventData.value, props.eventProp.id)
         Pop.success('event created')
-        clearForm()
         Modal.getOrCreateInstance('#EventFormModal').hide()
-        logger.log('event posted 😎')
+        logger.log('event edited 😎')
     }
     catch (error) {
         Pop.error(error);
     }
 
 
-}
-
-
-function clearForm() {
-    editableEventData.value = {
-        name: '',
-        coverImg: '',
-        description: '',
-        startDate: null,
-        capacity: 0,
-        location: '',
-        type: ''
-    }
 }
 
 </script>
@@ -61,7 +46,7 @@ function clearForm() {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form @submit.prevent="createEvent()">
+                    <form @submit.prevent="editEvent()">
                         <div class="mb-3">
                             <label for="name" class="form-label">name</label>
                             <input v-model="editableEventData.name" type="string" class="form-control" name="name"

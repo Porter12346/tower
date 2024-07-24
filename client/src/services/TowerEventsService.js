@@ -4,6 +4,25 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class TowerEventsService {
+    async editEvent(value, id) {
+        const response = await api.put(`api/events/${id}`, value)
+        logger.log(response.data)
+        const event = new TowerEvent(response.data)
+        AppState.activeEvent = event
+    }
+
+    async cancelEvent(id) {
+        const response = await api.delete(`api/events/${id}`)
+        logger.log(response)
+        AppState.activeEvent.isCanceled = true
+    }
+
+    async getEventById(id) {
+        const response = await api.get(`api/events/${id}`)
+        const towerEvent = new TowerEvent(response.data)
+        logger.log(towerEvent)
+        AppState.activeEvent = towerEvent
+    }
 
     async createEvent(data) {
         const response = await api.post('api/events', data)
@@ -14,8 +33,8 @@ class TowerEventsService {
 
     async getEvents() {
         const response = await api.get('api/events')
-        const events = response.data.map((eventData)=>new TowerEvent(eventData))
-        AppState.towerEvents = events
+        const events = response.data.map((eventData) => new TowerEvent(eventData))
+        AppState.towerEvents = events.reverse()
         logger.log(events)
     }
 
