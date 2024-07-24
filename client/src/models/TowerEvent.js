@@ -1,7 +1,7 @@
 import { Account } from "./Account.js"
 
-export class TowerEvent{
-    constructor(data){
+export class TowerEvent {
+    constructor(data) {
         this.id = data._id
         this.creatorId = data.creatorId
         this.name = data.name
@@ -14,6 +14,7 @@ export class TowerEvent{
         this.type = data.type
         this.createdAt = new Date(data.createdAt)
         this.updatedAt = new Date(data.updatedAt)
+        //Broken fix please nestted populate or just write better code
         this.creator = new Account(data.creator)
     }
 }

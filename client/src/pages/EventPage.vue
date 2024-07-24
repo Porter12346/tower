@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import { towerEventsService } from '../services/TowerEventsService.js';
 import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
+import { ticketsService } from '../services/TicketsService.js';
 
 const route = useRoute()
 
@@ -33,6 +34,16 @@ async function cancelEvent() {
     }
     catch (error) {
         Pop.error(error);
+    }
+}
+
+async function createTicket() {
+    try {
+        const id = route.params.eventId
+        const userId = account.value.id
+        await ticketsService.createTicket(id, userId)
+    } catch (error) {
+        Pop.error(error)
     }
 }
 </script>
@@ -82,7 +93,7 @@ async function cancelEvent() {
                         <div class="py-3 bg-dark">
                             <h5>inteseted in going?</h5>
                             <p>grab a ticket!</p>
-                            <button class="btn btn-info px-5">Attend</button>
+                            <button @click="createTicket()" class="btn btn-info px-5">Attend</button>
                         </div>
                         <p class="text-end"> 2 Spots left(FIX ME)</p>
                         <p class='text-start'>Attendees</p>
