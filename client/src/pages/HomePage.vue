@@ -1,5 +1,15 @@
 <script setup>
+import { computed, onMounted } from 'vue';
+import { AppState } from '../AppState.js';
+import { towerEventsService } from '../services/TowerEventsService.js';
 
+  const towerEvents = computed(()=>AppState.towerEvents)
+
+  onMounted(getTowerEvents)
+
+  async function getTowerEvents(){
+    await towerEventsService.getEvents()
+  }
 </script>
 
 <template>
@@ -81,6 +91,12 @@
       <div class="col-12">
         <h3>Upcoming events</h3>
       </div>
+      <div class="row">
+              <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2">
+          <EventCard :TowerEventProp="event"/>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
