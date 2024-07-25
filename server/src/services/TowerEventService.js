@@ -1,11 +1,11 @@
 import { dbContext } from "../db/DbContext.js"
-import { Forbidden } from "../utils/Errors.js"
+import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class TowerEventService {
 
     async getEventsByUserId(userId) {
         const events = await dbContext.TowerEvents.find({ creatorId: userId }).populate('creator ticketCount')
-        return(events)
+        return (events)
     }
 
     async cancelEvent(userId, eventId) {
@@ -27,7 +27,7 @@ class TowerEventService {
             throw new Forbidden('You cannot edit an event you do not own.')
         }
         if (eventToEdit.isCanceled) {
-            throw new Forbidden('You cannot edit a closed event.')
+            throw new BadRequest('You cannot edit a closed event.')
         }
         eventToEdit.name = newEventData.name || eventToEdit.name
         eventToEdit.description = newEventData.description || eventToEdit.description
