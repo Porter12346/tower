@@ -113,11 +113,11 @@ async function getEventTickets() {
                             <p v-if="hasATicket" class="text-info">You have a ticket</p>
                             <button @click="createTicket()" class="btn btn-info px-5">Attend</button>
                         </div>
-                        <p class="text-end"> 2 Spots left(FIX ME)</p>
+                        <p class="text-end"> {{ towerEvent.remainingTickets }} Spots left</p>
                         <p class='text-start'>Attendees</p>
                         <div class="py-3 bg-dark">
                             <div class="row scrollable-box">
-                                <div v-for="ticket in tickets" :key="ticket.id" class="col-12">
+                                <div v-for="ticket in tickets" :key="ticket?.id" class="col-12">
                                     <AttendeeCard :ticket-prop="ticket" />
                                 </div>
                             </div>

@@ -19,7 +19,8 @@ class TicketsService {
         logger.log(response.data)
         const ticket = new Ticket(response.data)
         AppState.activeTickets.unshift(ticket)
-
+        AppState.activeEvent.ticketCount++
+        AppState.activeEvent.remainingTickets--
     }
 
 }
