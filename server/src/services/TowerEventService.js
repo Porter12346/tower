@@ -3,6 +3,11 @@ import { Forbidden } from "../utils/Errors.js"
 
 class TowerEventService {
 
+    async getEventsByUserId(userId) {
+        const events = await dbContext.TowerEvents.find({ creatorId: userId }).populate('creator ticketCount')
+        return(events)
+    }
+
     async cancelEvent(userId, eventId) {
         const eventToCancel = await this.getTowerEventById(eventId)
         if (eventToCancel.creatorId != userId) {

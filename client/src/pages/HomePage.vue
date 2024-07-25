@@ -14,10 +14,10 @@ const towerEvents = computed(() => {
   return AppState.towerEvents.filter(towerEvent => towerEvent.type == filter.value)
 })
 
-onMounted(getTowerEvents)
-
 const catagories = ['all', 'concert', 'convention', 'sport', 'digital']
 const catagorieIcons = ['mdi mdi-all-inclusive', 'mdi mdi-music', 'mdi mdi-account-group', 'mdi mdi-soccer', 'mdi mdi-monitor']
+
+onMounted(getTowerEvents)
 
 async function getTowerEvents() {
   await towerEventsService.getEvents()
@@ -61,7 +61,8 @@ async function getTowerEvents() {
             <div class="col-10">
               <h5>Start an event to invite your friends</h5>
               <p>Create your own Tower event, and draw from a community of millions</p>
-              <p v-if="account" data-bs-toggle="modal" data-bs-target="#EventFormModal" type="button" class="mb-0 text-primary">Create an event</p>
+              <p v-if="account" data-bs-toggle="modal" data-bs-target="#EventFormModal" type="button"
+                class="mb-0 text-primary">Create an event</p>
             </div>
           </div>
         </div>

@@ -14,8 +14,6 @@ export class TowerEventsController extends BaseController {
             .post('', this.createTowerEvent)
             .put('/:eventId', this.editTowerEvent)
             .delete('/:eventId', this.cancelTowerEvent)
-
-
     }
 
     async getTicketsByEventId(request, response, next) {

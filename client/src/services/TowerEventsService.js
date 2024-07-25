@@ -4,6 +4,14 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class TowerEventsService {
+
+    async getEventsForUser() {
+        const response = await api.get(`account/events`)
+        const events = response.data.map((eventData)=>new TowerEvent(eventData))
+        AppState.towerEvents = events
+        logger.log(events)
+    }
+
     async editEvent(value, id) {
         const response = await api.put(`api/events/${id}`, value)
         logger.log(response.data)
