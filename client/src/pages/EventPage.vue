@@ -77,15 +77,15 @@ async function getEventTickets() {
                 <div class="col-md-8 mt-5 text-center text-md-start">
                     <div
                         class="align-items-center d-flex  mb-4 text-center text-md-start justify-content-center justify-content-md-between">
-                        <div class="d-flex gap-3">
+                        <div class="d-flex gap-md-3">
                             <h1 class="m-0">{{ towerEvent.name }}</h1>
-                            <p class="bg-light-subtle px-1 rounded m-0 align-self-center">{{ towerEvent.type }}</p>
+                            <p class="bg-light-subtle px-1 rounded m-md-0 me-5 align-self-center">{{ towerEvent.type }}</p>
                         </div>
                         <!-- <button v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="btn btn-info justify-self-md-end">
                             <i class="mdi mdi-menu"></i>
                         </button> -->
                         <div v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-secondary dropdown-toggle me-3" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="mdi mdi-pencil"></i>
                             </button>
@@ -111,7 +111,8 @@ async function getEventTickets() {
                             <h5>inteseted in going?</h5>
                             <p>grab a ticket!</p>
                             <p v-if="hasATicket" class="text-info">You have a ticket</p>
-                            <button @click="createTicket()" class="btn btn-info px-5">Attend</button>
+                            <button v-if="towerEvent.remainingTickets > 0" @click="createTicket()" class="btn btn-info px-5">Attend</button>
+                            <button v-else disabled class="btn btn-info px-5">Sold Out</button>
                         </div>
                         <p class="text-end"> {{ towerEvent.remainingTickets }} Spots left</p>
                         <p class='text-start'>Attendees</p>
