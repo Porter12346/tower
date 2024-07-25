@@ -40,19 +40,16 @@ async function getEventsByUserId() {
   <div class="about text-center">
     <div class="container">
       <div class="row">
-        <div class="col-12 mb-5">
+        <div class="col-2 mb-5">
           <div v-if="account" class="d-flex align-items-center mt-5">
             <img class="rounded" :src="account.picture" alt="" />
-            <div>
-              <h1 class="mx-5">{{ account.name }}</h1>
-              <h6>{{ events.length }} events | {{ tickets.length }} tickets</h6>
-            </div>
           </div>
-          <div v-else>
-            <h1>Loading... <i class="mdi mdi-loading mdi-spin"></i></h1>
-          </div>
-
         </div>
+        <div class="col-8 my-5">
+          <h1 class="mx-5">{{ account.name }}</h1>
+          <h6>{{ events.length }} events | {{ tickets.length }} tickets</h6>
+        </div>
+
 
       </div>
       <div class="row mt-5">
