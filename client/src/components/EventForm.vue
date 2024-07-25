@@ -5,11 +5,14 @@ import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { Modal } from 'bootstrap';
 import { TowerEvent } from '../models/TowerEvent.js';
+import { useRouter } from 'vue-router';
 
 defineProps({
     editing: { type: Boolean, default: false },
     eventProp: { type: TowerEvent }
 })
+
+const router = useRouter()
 
 const editableEventData = ref({
     name: '',
@@ -23,11 +26,12 @@ const editableEventData = ref({
 
 async function createEvent() {
     try {
-        await towerEventsService.createEvent(editableEventData.value)
+        const newTowerEvent = await towerEventsService.createEvent(editableEventData.value)
         Pop.success('event created')
         clearForm()
         Modal.getOrCreateInstance('#EventFormModal').hide()
         logger.log('event posted 😎')
+        router.push({name: 'Event', params: {eventId: newTowerEvent.id}})
     }
     catch (error) {
         Pop.error(error);

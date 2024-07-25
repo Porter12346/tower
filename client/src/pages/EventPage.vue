@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { AppState } from '../AppState.js';
 import { useRoute } from 'vue-router';
 import { towerEventsService } from '../services/TowerEventsService.js';
@@ -7,6 +7,7 @@ import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { ticketsService } from '../services/TicketsService.js';
 import AttendeeCard from '../components/AttendeeCard.vue';
+import { commentService } from '../services/CommentsService.js';
 
 const route = useRoute()
 
@@ -14,19 +15,38 @@ const towerEvent = computed(() => AppState.activeEvent)
 
 const account = computed(() => AppState.account)
 
-const tickets = computed(()=> AppState.activeTickets)
+const tickets = computed(() => AppState.activeTickets)
 
-const hasATicket = computed(()=> AppState.activeTickets.find(tick => tick.accountId == AppState.account.id))
+const comments = computed(() => AppState.activeComments)
+
+const hasATicket = computed(() => AppState.activeTickets.find(tick => tick?.accountId == AppState.account?.id))
 
 onMounted(() => {
     getEvent()
     getEventTickets()
+    getComments()
+})
+
+async function getComments() {
+    try {
+        const id = route.params.eventId
+        await commentService.getCommentsForEvent(id)
+    }
+    catch (error) {
+        Pop.error(error);
+    }
+}
+
+const editableCommentData = ref({
+    body: '',
+    eventId: ''
 })
 
 async function getEvent() {
     try {
         const id = route.params.eventId
         await towerEventsService.getEventById(id)
+
     }
     catch (error) {
         Pop.error(error);
@@ -63,6 +83,16 @@ async function getEventTickets() {
     }
 }
 
+async function postComment() {
+    try {
+        editableCommentData.value.eventId = towerEvent.value.id
+        await commentService.postComment(editableCommentData)
+    }
+    catch (error) {
+        Pop.error(error);
+    }
+}
+
 </script>
 
 
@@ -79,14 +109,15 @@ async function getEventTickets() {
                         class="align-items-center d-flex  mb-4 text-center text-md-start justify-content-center justify-content-md-between">
                         <div class="d-flex gap-md-3">
                             <h1 class="m-0">{{ towerEvent.name }}</h1>
-                            <p class="bg-light-subtle px-1 rounded m-md-0 me-5 align-self-center">{{ towerEvent.type }}</p>
+                            <p class="bg-light-subtle px-1 rounded m-md-0 me-5 align-self-center">{{ towerEvent.type }}
+                            </p>
                         </div>
                         <!-- <button v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="btn btn-info justify-self-md-end">
                             <i class="mdi mdi-menu"></i>
                         </button> -->
                         <div v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle me-3" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle me-3" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="mdi mdi-pencil"></i>
                             </button>
                             <ul class="dropdown-menu">
@@ -111,7 +142,8 @@ async function getEventTickets() {
                             <h5>inteseted in going?</h5>
                             <p>grab a ticket!</p>
                             <p v-if="hasATicket" class="text-info">You have a ticket</p>
-                            <button v-if="towerEvent.remainingTickets > 0" @click="createTicket()" class="btn btn-info px-5">Attend</button>
+                            <button v-if="towerEvent.remainingTickets > 0" @click="createTicket()"
+                                class="btn btn-info px-5">Attend</button>
                             <button v-else disabled class="btn btn-info px-5">Sold Out</button>
                         </div>
                         <p class="text-end"> {{ towerEvent.remainingTickets }} Spots left</p>
@@ -129,7 +161,20 @@ async function getEventTickets() {
             <div class="row">
                 <div class="col-12">Comments</div>
                 <div class="py-3 bg-dark">
-                    <p>FIX ME</p>
+                    <div class="rounded">
+                        <form @submit.prevent="postComment()" class="mb-3">
+                            <div class="mb-2">
+                                <textarea v-model="editableCommentData.body" class="form-control" id="commentTextArea"
+                                    placeholder="Tell the people" style="resize: none" rows="5"></textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-secondary px-4">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div v-for="comment in comments" :key="comment.id">
+                        <CommentCard :commentProp="comment" />
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,6 +37,7 @@ class TowerEventsService {
         const newEvent = new TowerEvent(response.data)
         AppState.towerEvents.unshift(newEvent)
         logger.log(newEvent)
+        return(newEvent)
     }
 
     async getEvents() {
