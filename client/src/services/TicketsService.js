@@ -4,6 +4,13 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class TicketsService {
+    async getTicketsByEventId(id) {
+        const response = await api.get(`api/events/${id}/tickets`)
+        const tickets = response.data.map((ticketData)=>new Ticket(ticketData))
+        AppState.activeTickets = tickets
+        logger.log(tickets)
+
+    }
 
     async createTicket(eventId, userId) {
         const ticketData = { userId, eventId }
@@ -11,6 +18,8 @@ class TicketsService {
         const response = await api.post(`api/tickets`, ticketData)
         logger.log(response.data)
         const ticket = new Ticket(response.data)
+        AppState.activeTickets.unshift(ticket)
+
     }
 
 }

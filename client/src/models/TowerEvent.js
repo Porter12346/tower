@@ -12,9 +12,10 @@ export class TowerEvent {
         this.startDate = new Date(data.startDate)
         this.isCanceled = data.isCanceled
         this.type = data.type
+        this.ticketCount = data.ticketCount
         this.createdAt = new Date(data.createdAt)
         this.updatedAt = new Date(data.updatedAt)
-        //Broken fix please nestted populate or just write better code
-        this.creator = new Account(data.creator)
+        this.creator = data.creator ? new Account(data.creator) : null
+
     }
 }

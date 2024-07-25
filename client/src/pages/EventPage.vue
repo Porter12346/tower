@@ -6,6 +6,7 @@ import { towerEventsService } from '../services/TowerEventsService.js';
 import Pop from '../utils/Pop.js';
 import { logger } from '../utils/Logger.js';
 import { ticketsService } from '../services/TicketsService.js';
+import AttendeeCard from '../components/AttendeeCard.vue';
 
 const route = useRoute()
 
@@ -13,8 +14,13 @@ const towerEvent = computed(() => AppState.activeEvent)
 
 const account = computed(() => AppState.account)
 
+const tickets = computed(()=> AppState.activeTickets)
+
+const hasATicket = computed(()=> AppState.activeTickets.find(tick => tick.accountId == AppState.account.id))
+
 onMounted(() => {
     getEvent()
+    getEventTickets()
 })
 
 async function getEvent() {
@@ -46,6 +52,17 @@ async function createTicket() {
         Pop.error(error)
     }
 }
+
+async function getEventTickets() {
+    try {
+        const id = route.params.eventId
+        await ticketsService.getTicketsByEventId(id)
+    }
+    catch (error) {
+        Pop.error(error);
+    }
+}
+
 </script>
 
 
@@ -93,12 +110,17 @@ async function createTicket() {
                         <div class="py-3 bg-dark">
                             <h5>inteseted in going?</h5>
                             <p>grab a ticket!</p>
+                            <p v-if="hasATicket" class="text-info">You have a ticket</p>
                             <button @click="createTicket()" class="btn btn-info px-5">Attend</button>
                         </div>
                         <p class="text-end"> 2 Spots left(FIX ME)</p>
                         <p class='text-start'>Attendees</p>
                         <div class="py-3 bg-dark">
-                            <p>FIX ME</p>
+                            <div class="row scrollable-box">
+                                <div v-for="ticket in tickets" :key="ticket.id" class="col-12">
+                                    <AttendeeCard :ticket-prop="ticket" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,7 +133,7 @@ async function createTicket() {
             </div>
         </div>
     </div>
-    <EventEditForm v-if="towerEvent" :eventProp="towerEvent"/>
+    <EventEditForm v-if="towerEvent" :eventProp="towerEvent" />
 </template>
 
 
@@ -121,5 +143,10 @@ async function createTicket() {
     height: 50vh;
     object-position: center;
     object-fit: cover;
+}
+
+.scrollable-box {
+    height: 29vh;
+    overflow-y: auto;
 }
 </style>
