@@ -4,6 +4,12 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class CommentsService{
+    async deleteComment(id) {
+        await api.delete(`api/comments/${id}`)
+        const index = AppState.activeComments.findIndex((comment) =>  comment.id == id )
+        AppState.activeComments.splice(index, 1)
+    }
+
     async postComment(editableCommentData) {
         const response = await api.post(`api/comments`, editableCommentData.value)
         const comment = new Comment(response.data)

@@ -173,7 +173,7 @@ async function postComment() {
                         </form>
                     </div>
                     <div v-for="comment in comments" :key="comment.id">
-                        <CommentCard :commentProp="comment" />
+                        <CommentCard :commentProp="comment" :accountProp="account"/>
                     </div>
                 </div>
             </div>
