@@ -16,7 +16,8 @@ const props = defineProps({
                 <p class="card-text">Hosted by {{ TowerEventProp.creator.name }}</p>
                 <p class="card-text">{{ TowerEventProp.startDate.toLocaleDateString() }} - {{ TowerEventProp.location }}
                 </p>
-                <p>10 attending (FIX ME)</p>
+                <p v-if="TowerEventProp.remainingTickets > 0" class="card-text"> {{ TowerEventProp.remainingTickets }} Spots left</p>
+                <h5 v-else class="text-danger">SOLD OUT</h5>
             </div>
         </router-link>
     </div>
