@@ -7,6 +7,8 @@ import { api } from "./AxiosService.js"
 class TicketsService {
 
     async deleteTicket(ticketId) {
+        const confirm = await Pop.confirm('Are you sure you want to return this ticket?')
+        if(!confirm){return('canceled')}
         await api.delete(`api/tickets/${ticketId}`)
         const index = AppState.activeTickets.findIndex((ticket) =>  ticket.id == ticketId )
         AppState.activeTickets.splice(index, 1)

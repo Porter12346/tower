@@ -12,7 +12,9 @@ const props = defineProps({
 async function deleteComment() {
     try {
         const response = await commentService.deleteComment(props.commentProp.id)
-        Pop.success('comment deleted')
+        if (response == 'canceled') { Pop.error('canceled') }
+        else { Pop.success('comment deleted') }
+
     }
     catch (error) {
         Pop.error(error);
@@ -28,7 +30,8 @@ async function deleteComment() {
         <div>
             <div class="d-flex justify-content-between">
                 <p class="mb-1 fw-bold fs-4 ">{{ commentProp.creator.name }}</p>
-                <button v-if="accountProp?.id == commentProp.creatorId" @click="deleteComment()" class="btn btn-secondary"><i class="mdi mdi-delete"></i></button>
+                <button v-if="accountProp?.id == commentProp.creatorId" @click="deleteComment()"
+                    class="btn btn-secondary"><i class="mdi mdi-delete"></i></button>
             </div>
             <p class="fill">{{ commentProp.body }}</p>
         </div>

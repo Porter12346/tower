@@ -9,8 +9,9 @@ const props = defineProps({
 
 async function deleteTicket() {
     try {
-        await ticketsService.deleteTicket(props.TicketProp.id)
-        Pop.success('Ticket Returned')
+        const response = await ticketsService.deleteTicket(props.TicketProp.id)
+        if(response == 'canceled'){Pop.error('canceled')}
+        else{Pop.success('Ticket Returned')}
     }
     catch (error) {
         Pop.error(error);

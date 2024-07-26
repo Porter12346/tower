@@ -1,6 +1,7 @@
 import { AppState } from "../AppState.js"
 import { TowerEvent } from "../models/TowerEvent.js"
 import { logger } from "../utils/Logger.js"
+import Pop from "../utils/Pop.js"
 import { api } from "./AxiosService.js"
 
 class TowerEventsService {
@@ -20,6 +21,9 @@ class TowerEventsService {
     }
 
     async cancelEvent(id) {
+        
+        const confirm = await Pop.confirm('Are you sure you want to cancel this event?')
+        if(!confirm){return('canceled')}
         const response = await api.delete(`api/events/${id}`)
         logger.log(response)
         AppState.activeEvent.isCanceled = true
