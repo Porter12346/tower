@@ -36,7 +36,7 @@ class TowerEventService {
         eventToEdit.capacity = newEventData.capacity || eventToEdit.capacity
         eventToEdit.startDate = newEventData.startDate || eventToEdit.startDate
         eventToEdit.type = newEventData.type || eventToEdit.type
-        eventToEdit.save()
+        await eventToEdit.save()
         return (eventToEdit)
     }
 
