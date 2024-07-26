@@ -112,9 +112,6 @@ async function postComment() {
                             <p class="bg-light-subtle px-1 rounded m-md-0 me-5 align-self-center">{{ towerEvent.type }}
                             </p>
                         </div>
-                        <!-- <button v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="btn btn-info justify-self-md-end">
-                            <i class="mdi mdi-menu"></i>
-                        </button> -->
                         <div v-if="(towerEvent.creatorId == account?.id) && (!towerEvent.isCanceled)" class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle me-3" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -128,7 +125,7 @@ async function postComment() {
                             </ul>
                         </div>
                     </div>
-
+                    <h5 class="text-info mb-4">Hosted by {{ towerEvent.creator.name }}</h5>
                     <p>{{ towerEvent.description }}</p>
                     <h6>Start Date</h6>
                     <p><i class="mdi mdi-calendar-clock text-info"></i> Starts on {{ towerEvent.startDate.toDateString()

@@ -87,14 +87,15 @@ async function getTowerEvents() {
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h3>Upcoming events</h3>
-      </div>
-      <div class="row">
-        <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2 d-flex justify-content-center">
-          <EventCard :TowerEventProp="event" />
-        </div>
+        <h3 class="my-3">Upcoming events</h3>
       </div>
 
+
+    </div>
+    <div class="row">
+      <div v-for="event in towerEvents" :key="event.id" class="col-md-4 col-12 mb-2  d-flex justify-content-center">
+        <EventCard :TowerEventProp="event" />
+      </div>
     </div>
   </div>
   <EventForm />
